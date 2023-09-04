@@ -1,0 +1,47 @@
+version: '3'
+services:
+  nginx:
+    image: nginx 
+    container_name: nginx
+    ports:
+      - 80:80
+
+      
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: jugnwordpressu
+      MYSQL_PASSWORD: wordpress
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_vol:/var/lib/mysql
+  
+  
+  web:
+    depends_on: 
+      - mysql
+    links:
+      - mysql:mysql
+    build: .
+    container_name: wordpress
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    # volumes:
+    #   ["./:/var/www/html"]
+
+volumes:
+  mysql_vol: {} 
+
+
+

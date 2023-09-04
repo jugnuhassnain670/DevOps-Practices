@@ -1,0 +1,11 @@
+docker run -d `
+>>      --network wordpress_network --network-alias mysql `
+>>      -v todo-mysql-data:/var/lib/mysql `
+>>      -e MYSQL_ROOT_PASSWORD=secret `
+>>      -e MYSQL_DATABASE=todos `
+>>      mysql:8.0
+
+
+docker run --name wordpress_website --network wordpress_network -p 8080:80 -d wordpress
+
+
